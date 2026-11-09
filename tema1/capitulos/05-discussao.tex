@@ -1,0 +1,38 @@
+\chapter{Discussão dos resultados}
+\label{cap:discussao}
+
+A discussão dos resultados tem como objetivo interpretar os dados obtidos durante a execução dos algoritmos e relacioná-los aos conceitos de arquitetura de computadores e organização da memória. A comparação entre os percursos linha por linha e coluna por coluna permite observar que a ordem de acesso aos dados influencia diretamente o desempenho de aplicações que trabalham com matrizes.
+
+\begin{table}[H]
+    \centering
+    \caption{Comparação entre os dois padrões de acesso à memória}
+    \label{tab:comparacao}
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Métrica} & \textbf{Linha por linha} & \textbf{Coluna por coluna} \\
+        \midrule
+        Tempo de execução (s) & 0,006974 & 0,010819 \\
+        Soma calculada & 4194304 & 4194304 \\
+        L1 cache misses & 61.204 & 5.444.797 \\
+        LLC cache misses & 126.655 & 320.348 \\
+        \bottomrule
+    \end{tabular}
+    \fonte{Elaborado pelos autores com dados do \texttt{perf stat} (2026).}
+\end{table}
+
+\section{Análise da comparação}
+Os resultados demonstram uma diferença significativa de desempenho entre os dois métodos. O percurso linha por linha executou a tarefa em aproximadamente 0,006 segundos, enquanto o percurso coluna por coluna levou cerca de 0,011 segundos. Isso representa um tempo cerca de 55\% maior para o algoritmo que percorre as colunas.
+
+\section{Do código em C ao hardware}
+A execução de um programa em C envolve uma interação direta entre o software e os componentes físicos. Quando um programa acessa um elemento de uma matriz, o processador precisa obter o dado na hierarquia de memória. Na linguagem C, a organização \textit{row-major} faz com que o percurso linha por linha aproveite melhor os dados já carregados na cache.
+
+No percurso linha por linha, o processador acessa posições consecutivas da memória, favorecendo o aproveitamento dos blocos de dados. No percurso coluna por coluna, os acessos ocorrem em posições mais distantes, provocando mais falhas de cache. Dessa forma, mesmo com a mesma complexidade assintótica (\(O(n \times m)\)), os desempenhos práticos são diferentes.
+
+\section{Limitações do método}
+Os resultados apresentados possuem limitações, como a dependência das configurações do compilador e as características do processador. Variações nos tempos de execução podem ocorrer devido ao sistema operacional e à execução de outros processos.
+
+\section{Limitações físicas}
+As limitações físicas estão relacionadas às características dos componentes de hardware. A memória cache possui capacidade limitada, enquanto a memória RAM apresenta maior latência. A largura de banda da memória e o tamanho dos blocos transferidos também influenciam o desempenho.
+
+\section{Impacto no desenvolvimento de software de alto desempenho}
+O estudo demonstra que a organização dos dados e a escolha dos padrões de acesso à memória são fundamentais. A utilização adequada da memória cache pode reduzir o tempo de execução e melhorar a eficiência dos recursos computacionais, especialmente em aplicações científicas, processamento de imagens e inteligência artificial.

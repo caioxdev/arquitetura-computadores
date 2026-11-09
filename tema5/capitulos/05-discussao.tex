@@ -1,0 +1,47 @@
+\chapter{Discussão dos resultados}
+\label{cap:discussao}
+
+\section{Métricas obtidas}
+\begin{table}[htb]
+    \caption{Comparação estática do código gerado (gcc 16.1)}
+    \label{tab:comparacao}
+    \centering
+    \begin{tabular}{lcccc}
+        \toprule
+                                 & \multicolumn{2}{c}{\texttt{-O0}} & \multicolumn{2}{c}{\texttt{-O2}}                  \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        Métrica                  & x86-64                           & ARM64                            & x86-64 & ARM64 \\
+        \midrule
+        Instruções               & 29                               & 31                               & 18     & 13    \\
+        Saltos                   & 3                                & 3                                & 2      & 2     \\
+        Acessos à memória        & 15                               & 17                               & 1      & 1     \\
+        Registradores utilizados & 5                                & 2                                & 5      & 4     \\
+        Bytes de código          & 95                               & 124                              & 66     & 64    \\
+        \bottomrule
+    \end{tabular}
+    \legend{Fonte: elaborado pelos autores com dados do Compiler Explorer. Em \texttt{-O2}, os bytes incluem 3 instruções \texttt{nop} de alinhamento em cada arquitetura, não contadas em ``Instruções''.}
+\end{table}
+
+\section{Análise da comparação}
+Em \texttt{-O0}, o ARM64 executa 31 instruções contra 29 do x86-64, e ocupa mais bytes (124 contra 95). A largura fixa de 4 bytes do ARM64 contrasta com as instruções de tamanho variável do x86-64. Em \texttt{-O2}, o ARM64 usa 13 instruções contra 18, e os bytes quase empatam (64 contra 66). Nos dois níveis, a mudança de otimização altera mais a contagem do que a mudança de arquitetura.
+
+\section{Do código em C ao hardware}
+O laço \texttt{for} vira uma comparação seguida de salto condicional: \texttt{cmp} e \texttt{jl} no x86-64, \texttt{cmp} e \texttt{blt} no ARM64. Em \texttt{-O0}, a acumulação \texttt{soma += v[i]} mostra a diferença entre as filosofias. No x86-64, \texttt{add DWORD PTR [rbp-4], eax} lê e escreve a memória em uma instrução. No ARM64, são necessárias \texttt{ldr}, \texttt{add} e \texttt{str}, pois apenas carga e armazenamento acessam a memória. Em \texttt{-O2}, as variáveis passam para registradores e o \texttt{if} deixa de gerar salto: \texttt{cmovs} no x86-64 e \texttt{bic} no ARM64.
+
+\section{Limitações do método}
+O Godbolt fornece análise estática. Ele mostra as instruções geradas, mas não executa o programa e não mede ciclos reais, tempo de CPU, cache, previsão de saltos nem execução fora de ordem. Contagem de instruções e de bytes não equivale a desempenho. Os resultados valem para este trecho de código e para o gcc 16.1.
+
+\section{Limitações físicas}
+O consumo de energia e a dissipação de calor limitam o aumento da frequência de operação dos processadores. Por isso, o ganho de desempenho passou a depender de paralelismo e de eficiência por instrução \cite[p.~24--28]{patterson2017}. A contagem de transistores também tem custo de área e de energia, e decodificadores de instruções irregulares ocupam mais recursos que decodificadores de instruções regulares \cite[p.~408--410, 560--562]{stallings2017}.
+
+Atribuir diferenças de consumo apenas à classificação RISC ou CISC é uma simplificação, pois cache, pipeline e processo de fabricação também influenciam o resultado. Na PoC, o ARM64 usa instruções de largura fixa de 4 bytes, enquanto o x86-64 usa instruções de tamanho variável. Esse contraste de formato é o que torna a decodificação do x86-64 mais complexa \cite[p.~289--292]{tanenbaum2013}. A PoC, porém, é estática: não mede consumo, área nem frequência.
+
+\section{Estudo de caso: servidores e dispositivos móveis}
+Para o mesmo trecho em C, a PoC mostra o que cada ISA exige do compilador e do hardware. O x86-64 permite operar diretamente sobre a memória, como em \texttt{add DWORD PTR [rbp-4], eax}, e tem instruções de tamanho variável \cite{intel2024}. O ARM64 separa o acesso à memória da aritmética (\texttt{ldr}, \texttt{add}, \texttt{str}) e tem instruções de tamanho fixo \cite{arm2024}. Esses traços orientam o uso de cada arquitetura, mas não bastam para afirmar qual é melhor em servidores ou em dispositivos móveis, pois isso depende de energia, desempenho medido e compatibilidade de software.
+
+No mercado, as duas arquiteturas coexistem. Em servidores x86-64, a Intel e a AMD dividem a receita de CPUs para servidores: no primeiro trimestre de 2026, a Intel ficou com 53,8\% e a AMD com 46,2\% \cite{exame2026}. Em nuvem, a Amazon projetou processadores ARM próprios, os Graviton, oferecidos como máquinas virtuais na AWS \cite{register2018}. Em computadores pessoais, a Apple anunciou em 2020 a troca dos processadores Intel por chips próprios de arquitetura ARM, a mesma usada em iPhones e iPads \cite{canaltech2020}.
+
+\section{Impacto no desenvolvimento de software de alto desempenho}
+A ISA aparece para o programador por meio do compilador. O mesmo código C gerou sequências diferentes em x86-64 e ARM64, e o programa precisa ser recompilado para cada arquitetura \cite{godbolt}. Na PoC, a troca de \texttt{-O0} para \texttt{-O2} alterou a contagem de instruções mais do que a troca de arquitetura (Tabela~\ref{tab:comparacao}). Para quem escreve software de alto desempenho, isso significa que as opções do compilador e a escolha de algoritmos pesam tanto quanto a ISA.
+
+Os efeitos de cache, previsão de saltos e execução fora de ordem não foram medidos neste trabalho. A análise de um programa real exige medição de tempo e de contadores de hardware, além do Assembly. Detalhes de cada instrução devem ser conferidos nos manuais das arquiteturas \cite{intel2024,arm2024}.

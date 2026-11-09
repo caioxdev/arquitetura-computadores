@@ -1,0 +1,31 @@
+\chapter{Introdução}
+\label{cap:introducao}
+
+\section{Contextualização}
+A memória cache é uma memória volátil de alta velocidade, porém com pequena capacidade de armazenamento. O tempo de acesso a um dado nela contido é muito menor que se o mesmo estivesse na memória principal. O propósito do uso da memória cache é minimizar a disparidade existente entre a velocidade com que o processador executa instruções e a velocidade com que dados são lidos e gravados na memória principal. Apesar de ser uma memória de acesso rápido, a capacidade de armazenamento das memórias cache é limitada em função do seu alto custo.
+
+A memória cache armazena uma pequena parte do conteúdo da memória principal. Toda vez que o processador faz referência a um dado armazenado na memória, é verificado, primeiramente, se o mesmo encontra-se na memória cache. Caso o processador encontre o dado (\textit{cache hit}), não há necessidade do acesso à memória principal, diminuindo assim o tempo de acesso.
+
+Se a informação desejada não estiver presente na cache, o acesso à memória principal é obrigatório (\textit{cache miss}). Neste caso, o processador, a partir do dado referenciado, transfere um bloco de dados da memória principal para a cache.
+
+A localidade é a tendência de o processador, ao longo da execução de um programa, referenciar instruções e dados na memória principal localizados em endereços próximos. Esta tendência é justificada pela alta incidência de estruturas de repetição, chamadas a sub-rotinas e acesso a estruturas de dados como vetores e tabelas \cite{machado2013}.
+
+\section{Importância para o desempenho}
+Apesar de existir neste mecanismo um tempo adicional para a transferência de dados entre as diferentes memórias, este tempo é compensado pela melhora do desempenho, justificado pelo alto percentual de referências a endereços que são resolvidos na cache. O princípio da localidade garante que após a transferência de um novo bloco da memória principal para a cache haverá uma alta probabilidade de \textit{cache hits} em futuras referências, otimizando, assim, o tempo de acesso ao dado.
+
+A maioria dos processadores apresenta uma arquitetura de memória cache com múltiplos níveis. O funcionamento desta arquitetura tem como base o princípio de que quanto menor é a capacidade de armazenamento da memória cache, mais rápido é o acesso ao dado; contudo, a probabilidade da ocorrência de \textit{cache hits} é menor \cite{machado2013}.
+
+\section{Objetivos}
+\subsection{Objetivo geral}
+Analisar e comparar o desempenho de dois métodos de acesso aos elementos de uma matriz bidimensional: o percurso linha por linha e o percurso coluna por coluna, demonstrando como a organização dos dados na memória e a forma como eles são acessados influenciam o desempenho de um programa.
+
+\subsection{Objetivos específicos}
+\begin{itemize}
+    \item Apresentar os conceitos fundamentais da memória cache, incluindo hierarquia de memória, princípio da localidade e políticas de escrita.
+    \item Implementar algoritmos em linguagem C para comparar diferentes padrões de acesso à memória.
+    \item Medir o tempo de execução e a taxa de falhas de cache (\textit{cache misses}) de cada algoritmo.
+    \item Analisar a influência da hierarquia de memória, especialmente da memória cache, no desempenho computacional.
+\end{itemize}
+
+\section{Organização do trabalho}
+O Capítulo 2 apresenta a fundamentação teórica sobre a hierarquia de memória, princípio da localidade, mapeamento e políticas de escrita. O Capítulo 3 traz os diagramas arquiteturais. O Capítulo 4 descreve a metodologia e a Prova de Conceito (PoC). O Capítulo 5 discute os resultados obtidos e suas limitações. O Capítulo 6 reúne as conclusões do grupo.

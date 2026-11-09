@@ -1,0 +1,27 @@
+\chapter{Introdução}
+\label{cap:introducao}
+
+\section{Contextualização}
+O conjunto de instruções (ISA, \textit{Instruction Set Architecture}) é a interface entre o software e o hardware. Ele define as instruções que o processador executa, os tipos de operandos, os modos de endereçamento e os registradores acessíveis ao programador \cite{stallings2017}. Duas filosofias de projeto de ISA se consolidaram: RISC (\textit{Reduced Instruction Set Computer}) e CISC (\textit{Complex Instruction Set Computer}).
+
+A filosofia RISC prioriza instruções simples e regulares, com o acesso à memória separado das operações aritméticas \cite{stallings2017}. A filosofia CISC admite instruções mais complexas, de formato variável, que podem operar diretamente sobre a memória \cite{silva2024}. Hoje a fronteira entre as duas é menos nítida: os processadores da linha x86 aceitam o conjunto de instruções CISC, mas o traduzem, em tempo de execução, para operações internas mais simples \cite{silva2024}.
+
+\section{Importância para o desempenho}
+O tempo de execução de um programa depende do número de instruções, dos ciclos gastos por instrução e da duração do ciclo de relógio (Equação~\ref{eq:tp}). As duas filosofias atuam sobre esses fatores de modos diferentes. Instruções complexas tendem a reduzir o número de instruções do programa, enquanto instruções simples e regulares facilitam a decodificação e o uso de \textit{pipeline} \cite{silva2024}.
+
+Por isso, entender RISC e CISC ajuda a explicar o desempenho, o consumo de energia e as escolhas do compilador. Para quem desenvolve software, mostra também por que o mesmo código em C gera sequências de instruções diferentes em cada arquitetura.
+
+\section{Objetivos}
+\subsection{Objetivo geral}
+Comparar as arquiteturas RISC e CISC, analisando suas características e aplicações, por meio de um estudo de caso e da análise do Assembly gerado a partir de um mesmo código em C.
+
+\subsection{Objetivos específicos}
+\begin{itemize}
+  \item Apresentar os conceitos de ISA, RISC e CISC, a densidade de código, o \textit{pipeline} e a convergência entre as duas filosofias.
+  \item Compilar o mesmo código em C para x86-64 e ARM64 no Compiler Explorer, com os níveis de otimização \texttt{-O0} e \texttt{-O2}, e comparar o Assembly gerado.
+  \item Discutir os resultados da análise estática e suas limitações.
+  \item Relacionar as diferenças entre as arquiteturas a cenários de uso em servidores e dispositivos móveis.
+\end{itemize}
+
+\section{Organização do trabalho}
+O Capítulo~\ref{cap:fundamentacao} apresenta a fundamentação teórica. O Capítulo~\ref{cap:diagramas} traz os diagramas da arquitetura. O Capítulo~\ref{cap:metodologia} descreve a prova de conceito, com o código, o Assembly gerado e as métricas. O Capítulo~\ref{cap:discussao} discute os resultados e suas limitações. O Capítulo~\ref{cap:conclusao} reúne as conclusões.

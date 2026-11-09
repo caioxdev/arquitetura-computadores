@@ -1,0 +1,133 @@
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{indentfirst}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{hyperref}
+
+\usepackage[alf]{abntex2cite}
+\usepackage{listings}
+
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{codekw}{RGB}{0,102,204}
+\definecolor{codecm}{RGB}{0,128,0}
+\definecolor{codestr}{RGB}{163,21,21}
+
+\lstdefinestyle{base}{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=8pt,
+    frame=single,
+    rulecolor=\color{gray!40},
+    showstringspaces=false,
+    tabsize=4,
+    captionpos=b,
+    escapeinside={(*@}{@*)} % <--- Isso resolve os avisos de caracteres especiais
+}
+
+\lstdefinestyle{cstyle}{
+    style=base,
+    language=C,
+    commentstyle=\color{codecm}\itshape,
+    keywordstyle=\color{codekw}\bfseries,
+    stringstyle=\color{codestr}
+}
+
+\lstdefinestyle{x86}{
+    style=base,
+    language=[x86masm]Assembler,
+    commentstyle=\color{codecm}\itshape,
+    keywordstyle=\color{codekw}\bfseries
+}
+
+\lstdefinelanguage{ARMAssembly}{
+    morekeywords={mov,add,sub,mul,ldr,str,ldp,stp,b,bl,ret,beq,bne,cbz,cbnz,cmp,adrp,adr,lsl,lsr,asr},
+    sensitive=false,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]"
+}
+
+\lstdefinestyle{arm}{
+    style=base,
+    language=ARMAssembly,
+    commentstyle=\color{codecm}\itshape,
+    keywordstyle=\color{codekw}\bfseries,
+    stringstyle=\color{codestr}
+}
+
+\lstdefinelanguage{RISCVAssembly}{
+    morekeywords={lw,sw,add,sub,and,or,xor,beq,bne,blt,bge,jal,jalr,li,la,mv,ret,lui,auipc,slli,srli},
+    sensitive=false,
+    morecomment=[l]{\#},
+    morestring=[b]"
+}
+
+\lstdefinestyle{riscv}{
+    style=base,
+    language=RISCVAssembly,
+    commentstyle=\color{codecm}\itshape,
+    keywordstyle=\color{codekw}\bfseries,
+    stringstyle=\color{codestr}
+}
+
+\renewcommand{\lstlistingname}{Código}
+\renewcommand{\lstlistlistingname}{Lista de códigos}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabela}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue,
+    pdftitle={Funcionamento da memória cache e técnicas de otimização},
+    pdfauthor={Arthur Martins Fonseca Dias; Arthur Freitas Araújo; Caio Seabra de Queiroz; Marina Souza Ramos}
+}
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\bfseries\raggedright}
+{\thesection}
+{1em}
+{}
+
+\titleformat{\subsection}
+{\normalfont\bfseries\raggedright}
+{\thesubsection}
+{1em}
+{}
+
+\titleformat{\subsubsection}
+{\normalfont\raggedright}
+{\thesubsubsection}
+{1em}
+{}
+
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+% ---------- Comandos personalizados para os dados do trabalho ----------
+\providecommand{\curso}[1]{\def\imprimircurso{#1}}
+\providecommand{\imprimircurso}{}
+\providecommand{\disciplina}[1]{\def\imprimirdisciplina{#1}}
+\providecommand{\imprimirdisciplina}{}
+\providecommand{\professor}[1]{\def\imprimirprofessor{#1}}
+\providecommand{\imprimirprofessor}{}

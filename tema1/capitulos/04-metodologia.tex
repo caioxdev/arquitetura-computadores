@@ -1,0 +1,47 @@
+\chapter{Metodologia e desenvolvimento}
+\label{cap:metodologia}
+
+A metodologia utilizada neste trabalho consiste no desenvolvimento de uma Prova de Conceito (PoC) com o objetivo de analisar e comparar o desempenho de dois métodos de acesso aos elementos de uma matriz bidimensional: o percurso linha por linha e o percurso coluna por coluna. A proposta busca demonstrar como a organização dos dados na memória e a forma como eles são acessados podem influenciar diretamente o desempenho de um programa.
+
+Para realizar essa comparação, foram implementados algoritmos em linguagem C, utilizando uma matriz com dimensões previamente definidas. Os dois métodos executam operações sobre os mesmos elementos, porém seguindo ordens diferentes de acesso à memória. Dessa forma, é possível observar diferenças no tempo de execução e compreender a influência da hierarquia de memória, especialmente da memória cache, no desempenho computacional.
+
+\section{Ambiente de teste}
+Os testes foram realizados em um ambiente computacional com o objetivo de garantir condições semelhantes para a execução dos dois algoritmos. Para isso, foram utilizados o mesmo computador, sistema operacional, compilador e configurações de execução. A linguagem C foi escolhida por permitir maior controle sobre o acesso à memória.
+
+\section{Ferramentas de medição}
+Para avaliar o desempenho dos algoritmos, foram utilizadas ferramentas de medição de tempo de execução disponíveis na linguagem C e no ambiente de desenvolvimento.
+A medição do tempo permite identificar quanto tempo cada algoritmo leva para percorrer todos os elementos da matriz. Essa informação é importante para compreender como diferentes estratégias de acesso aos dados podem produzir resultados distintos, mesmo quando realizam a mesma quantidade de operações.
+Além disso, podem ser utilizadas ferramentas de monitoramento de desempenho do sistema para observar aspectos como utilização do processador e comportamento da memória cache. Essas informações complementam os resultados obtidos pela medição do tempo de execução.
+É importante realizar várias execuções de cada algoritmo e calcular uma média dos resultados, reduzindo a influência de possíveis variações ocasionais do sistema.
+
+\section{Algoritmos implementados}
+Foram desenvolvidos dois algoritmos com a finalidade de comparar diferentes formas de percorrer uma matriz bidimensional. Na linguagem C, as matrizes são armazenadas na memória seguindo uma organização denominada \textit{row-major order}.
+
+\subsection{Percurso linha por linha}
+O primeiro algoritmo realiza o acesso aos elementos da matriz percorrendo inicialmente todas as colunas de uma linha antes de avançar para a próxima linha. Como os elementos de uma mesma linha estão armazenados em posições consecutivas da memória, o processador consegue aproveitar melhor os dados carregados previamente para a memória cache.
+
+\clearpage
+
+\lstinputlisting[style=cstyle, caption={Código em C para o percurso linha por linha}, label={lst:linha}]{poc/percurso_linha.c}
+
+\subsection{Percurso coluna por coluna}
+O segundo algoritmo percorre uma coluna inteira antes de avançar para a próxima. Embora todos os elementos sejam acessados, essa estratégia não acompanha a ordem em que os dados estão organizados na memória, apresentando menor aproveitamento da memória cache.
+
+\clearpage
+
+\lstinputlisting[style=cstyle, caption={Código em C para o percurso coluna por coluna}, label={lst:coluna}]{poc/percurso_coluna.c}
+
+\section{Passo a passo da PoC}
+\begin{enumerate}
+    \item Criação e inicialização da matriz bidimensional.
+    \item Implementação do percurso linha por linha (dois laços de repetição).
+    \item Desenvolvimento do percurso coluna por coluna (invertendo a ordem dos laços).
+    \item Medição do tempo de execução de cada algoritmo.
+    \item Análise dos dados considerando a organização da memória.
+\end{enumerate}
+
+\section{Métricas coletadas}
+As principais métricas consideradas foram o tempo de execução e a diferença de desempenho entre os dois métodos. Também foram considerados indicadores como a quantidade de acertos (\textit{cache hits}) e falhas (\textit{cache misses}).
+
+\section{Limitações do método}
+A metodologia apresenta limitações relacionadas ao hardware utilizado, fatores como processos em segundo plano, temperatura do processador e otimizações do compilador. O tamanho da matriz também influencia, pois se os dados couberem completamente na cache, a diferença entre os algoritmos será reduzida.

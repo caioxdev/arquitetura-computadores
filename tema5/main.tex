@@ -1,0 +1,49 @@
+\documentclass[
+    12pt,
+    openright,
+    oneside,
+    a4paper,
+    english,
+    brazil,
+    sumario=tradicional
+]{abntex2}
+
+% 1. Carrega as configurações e pacotes
+\input{preambulo/config}
+
+% 2. Define os dados do trabalho (isso vai preencher a capa automaticamente)
+\titulo{Arquiteturas RISC vs.\ CISC: características, aplicações e estudo de caso}
+\autor{Arthur Freitas Araújo \\ Arthur Martins Fonseca Dias \\ Caio Seabra de Queiroz \\ Marina Souza Ramos}
+\local{Brasília -- DF}
+\data{2026}
+\instituicao{Universidade Católica de Brasília}
+\curso{Ciência da Computação}
+\disciplina{Arquitetura de Computadores}
+\professor{Weldes Lima Oliveira}
+
+\begin{document}
+
+% --- Pré-textuais ---
+\input{preambulo/capa} % Apenas a capa unificada
+
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+% --- Textuais (O Tema 5 em si) ---
+\textual
+
+\input{capitulos/01-introducao}
+\input{capitulos/02-fundamentacao}
+\input{capitulos/03-diagramas}
+\input{capitulos/04-metodologia}
+\input{capitulos/05-discussao}
+\input{capitulos/06-conclusao}
+
+% --- Pós-textuais ---
+\postextual
+\nocite{patterson2017,stallings2017,tanenbaum2013,monteiro2007,weber2012,intel2024,arm2024,riscv2019,godbolt}
+\bibliography{referencias}
+
+
+\end{document}

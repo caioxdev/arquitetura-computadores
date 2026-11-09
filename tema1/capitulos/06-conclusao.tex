@@ -1,0 +1,19 @@
+\chapter{Conclusão}
+\label{cap:conclusao}
+
+O desenvolvimento deste trabalho permitiu analisar a influência dos padrões de acesso à memória no desempenho de programas desenvolvidos em linguagem C. A partir da implementação dos algoritmos de percurso linha por linha e coluna por coluna, foi possível estudar como a organização dos dados na memória interfere na execução de operações sobre matrizes bidimensionais. Os conceitos estudados demonstram que pequenas alterações na estrutura de um programa podem produzir diferenças significativas de desempenho, especialmente quando são utilizados grandes conjuntos de dados.
+
+\section{Síntese do aprendizado}
+Durante o desenvolvimento da atividade, foi possível compreender a importância da hierarquia de memória e sua influência na execução de programas. O estudo demonstrou que a memória cache desempenha um papel fundamental na redução do tempo de acesso aos dados, permitindo que o processador trabalhe de maneira mais eficiente.
+
+Também foi possível compreender que a linguagem C utiliza uma organização de memória na qual os elementos de uma mesma linha de uma matriz são armazenados de forma sequencial. Dessa maneira, o percurso linha por linha tende a proporcionar melhor aproveitamento da memória cache em comparação ao percurso coluna por coluna.
+
+\section{Lições aprendidas}
+Uma das principais lições aprendidas foi que a eficiência de um algoritmo não depende apenas de sua complexidade teórica. Embora os dois métodos implementados apresentem a mesma complexidade assintótica, o comportamento durante a execução pode ser diferente devido à organização dos dados na memória.
+
+Outro aprendizado importante foi a necessidade de realizar testes práticos para avaliar o desempenho de um programa. A análise teórica permite formular hipóteses, mas as medições são fundamentais para verificar como o código se comporta em um ambiente real.
+
+\section{Implicações práticas}
+Os conhecimentos adquiridos durante o trabalho podem ser aplicados em diferentes áreas da computação, principalmente em programas que realizam operações com grandes volumes de dados. Em aplicações de processamento de imagens, cálculos científicos, inteligência artificial e simulações computacionais, a organização dos dados e a forma de acesso à memória podem influenciar diretamente o tempo necessário para concluir uma tarefa. Assim, utilizar padrões de acesso que favoreçam a localidade espacial pode contribuir para melhorar o desempenho das aplicações.
+
+Conclui-se que o desenvolvimento de software eficiente exige não apenas conhecimentos de programação, mas também compreensão sobre o funcionamento do hardware. A análise realizada evidencia a importância de considerar a interação entre código, processador e memória durante o desenvolvimento de soluções computacionais.

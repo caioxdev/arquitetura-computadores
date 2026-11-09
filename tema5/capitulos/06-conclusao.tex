@@ -1,0 +1,11 @@
+\chapter{Conclusão}
+\label{cap:conclusao}
+
+\section{Síntese do aprendizado}
+Este trabalho comparou as arquiteturas RISC e CISC, utilizando a análise estática do Assembly gerado pelo Compiler Explorer como prova de conceito. Os objetivos foram atingidos ao demonstrar que, embora o x86-64 (CISC) tenha gerado menos instruções em nível de otimização zero (-O0), ele utiliza instruções de tamanho variável que tornam a decodificação mais complexa. Por outro lado, o ARM64 (RISC) gerou mais instruções, porém com largura fixa e separação clara entre operações de memória (load/store) e de registradores.
+
+\section{Lições aprendidas}
+A principal lição é que a divisão entre RISC e CISC não é mais uma fronteira rígida. Os processadores modernos convergiram: o x86-64 traduz instruções complexas em micro-operações internas (tornando-se RISC por dentro), enquanto o ARM64 adiciona extensões complexas (como vetorização) para ganhar desempenho. Além disso, a PoC mostrou que o nível de otimização do compilador (de -O0 para -O2) altera drasticamente o código gerado, reduzindo a contagem de instruções e muitas vezes superando o impacto da própria mudança de arquitetura. O uso de instruções como \texttt{cmovs} e \texttt{bic} elimina saltos condicionais, otimizando o pipeline.
+
+\section{Implicações práticas}
+Para o desenvolvimento de software de alto desempenho, entender a arquitetura é fundamental para escolher a melhor linguagem, as flags de compilação corretas e as estruturas de dados adequadas. O programador precisa saber que o mesmo código em C terá um comportamento de hardware diferente em um servidor x86 e em um dispositivo móvel ARM, e que o compilador fará otimizações agressivas quando solicitado. Compreender como o laço \texttt{for} se transforma em saltos e como a memória é acessada permite escrever códigos que exploram melhor a localidade e o poder de processamento dos processadores modernos.

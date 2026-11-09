@@ -1,0 +1,70 @@
+\chapter{Fundamentação teórica}
+\label{cap:fundamentacao}
+
+\section{Arquitetura de conjunto de instruções (ISA)}
+A ISA (Instruction Set Architecture) é a interface que separa o hardware do software. Ela define o formato das instruções (opcode e operandos), os modos de endereçamento, os registradores visíveis ao programador e o modelo de memória. É a ISA que garante que um mesmo código compilado possa rodar em processadores de diferentes fabricantes, desde que compartilhem a mesma arquitetura \cite{stallings2017}.
+
+\section{Filosofia RISC}
+A filosofia RISC (\textit{Reduced Instruction Set Computer}) baseia-se na simplicidade. Seus princípios incluem: instruções de tamanho fixo, poucos formatos de instrução e a separação estrita entre operações aritméticas e acessos à memória (arquitetura \textit{load/store}). Apenas as instruções de carga e armazenamento acessam a memória; o resto opera apenas sobre registradores. Isso facilita a implementação de \textit{pipelines} profundos e decodificadores mais simples e rápidos \cite{stallings2017}.
+
+\section{Filosofia CISC}
+\subsection{Arquitetura memória-memória}
+Os processadores com arquitetura memória-memória possuem instruções aritméticas e lógicas onde todos os operandos são referenciados explicitamente. Ou seja, essas instruções possuem um total de três operandos, que podem estar localizados na memória. Apesar de, em grande parte dos casos, ainda ser necessário fazer uso de registradores, as instruções aritméticas e lógicas desses processadores têm a capacidade de referenciar todas as variáveis diretamente na memória \cite{silva2024}.
+
+Normalmente, o código gerado pelos compiladores para essas máquinas é bastante eficiente, com um número bem menor de instruções de máquina. Em contrapartida, resultam em arquiteturas com implementação bastante complexa e sem possibilidade do uso de técnicas de otimização da execução das instruções, como o \textit{pipeline}. Como consequência, têm baixo desempenho quando comparadas com outras arquiteturas que adotaram soluções mais modernas, como os processadores RISC. Esse tipo de arquitetura é característico dos processadores CISC. Um exemplo de computador desse tipo é o VAX-11/780, um processador bastante comercializado nas décadas de 1970 e 1980 \cite{silva2024}.
+
+\subsection{Arquitetura registrador-memória}
+Os processadores com arquitetura registrador-memória normalmente possuem instruções aritméticas e lógicas com dois operandos, sendo que um deles está em memória e o outro em registrador. O resultado da operação é escrito automaticamente no mesmo registrador. Os exemplos clássicos desse tipo de arquitetura são o IBM 360 e os processadores da linha Intel x86. Em sua maioria, também são consideradas arquiteturas do tipo CISC, sendo que os processadores da linha x86, modernamente, implementam um tradutor que, em tempo de execução, faz a tradução de instruções x86 convencionais para instruções de um processador RISC implementado internamente \cite{silva2024}.
+
+\begin{lstlisting}[caption={Exemplo de sequência em arquitetura registrador-memória (soma de A e B armazenada em C)}, label={lst:pseudo}]
+LOAD R1, A
+ADD R1, B
+STORE C, R1
+\end{lstlisting}
+
+\subsection{Características da arquitetura CISC}
+Uma outra maneira de melhorar o desempenho é diminuir o número total de instruções ($N_i$) gastas para traduzir um programa da linguagem de alto nível para a linguagem de máquina. Assim, instruções cada vez mais complexas eram implementadas no conjunto de instruções do processador. Essas instruções podiam realizar de uma só vez várias operações complexas, acessando o maior número possível de operandos de uma única vez, com vários e diversos modos de endereçamento possíveis.
+
+Essa aproximação foi adotada pelas arquiteturas CISC (\textit{Complex Instruction Set Computer}), presentes nas primeiras arquiteturas de processadores, incluindo as dos primeiros microprocessadores, até o início da década de 1980. Exemplos de arquitetura CISC são os antigos processadores x86 da Intel e o VAX-11/780, entre outros computadores clássicos.
+
+Resumindo, as arquiteturas CISC são caracterizadas por instruções complexas, que frequentemente demandam um grande número e variável de ciclos de relógio para serem executadas. Essas instruções possuem formatos variáveis e diversos modos de endereçamento dos operandos. Vários tipos de instruções podem acessar os seus operandos diretamente na memória. Como resultado, há uma dificuldade grande para o uso de técnicas como \textit{pipeline} na implementação desses processadores. A taxa média de execução das instruções por ciclo tende a ser bastante superior a 1 ciclo por instrução (CPI) e a unidade de controle desses processadores é, em geral, microprogramada. Como grande vantagem, os compiladores podem gerar códigos compactos, com um reduzido número de instruções \cite{silva2024}.
+
+\section{Densidade de código e complexidade de decodificação}
+Um dos objetivos da arquitetura de um processador é permitir a execução dos programas o mais rapidamente possível. Há várias técnicas que são empregadas para isso, mas, de uma forma simplificada, o tempo de execução de um programa pode ser definido pela seguinte equação:
+
+\begin{equation}
+    T_p = C_i \times T_c \times N_i
+    \label{eq:tp}
+\end{equation}
+
+Em que:
+\begin{itemize}
+    \item $T_p$ é o tempo de execução do programa;
+    \item $C_i$ são os ciclos gastos em média por instrução;
+    \item $T_c$ é o tempo de duração de um ciclo;
+    \item $N_i$ é o número de instruções do programa.
+\end{itemize}
+
+O $C_i$ também é conhecido como CPI (Ciclos por Instrução) e define o número médio de ciclos gastos por cada instrução. É um valor que varia de acordo com cada programa, por exemplo, se possui mais instruções inteiras ou de ponto flutuante, além do tipo da arquitetura do processador. O CPI é obtido dividindo-se o número total de ciclos de relógio gastos para executar um programa pelo total de instruções executadas. O seu inverso é o IPC (Instruções por Ciclo), mais usado modernamente nas arquiteturas superescalares, para indicar o número de instruções, normalmente maior do que um, que podem ser executadas a cada ciclo de relógio do processador. O tempo de ciclo ($T_c$) é o inverso da frequência do relógio $f$, segundo a fórmula:
+
+\begin{equation}
+    T_c = \frac{1}{f}
+    \label{eq:tc}
+\end{equation}
+
+Por exemplo, se a frequência do relógio for 100 MHz ($100 \times 10^{6}$ Hz), o tempo de ciclo será de 10 ns ($10 \times 10^{-9}$ s). Logo, quanto maior for a frequência do relógio, menor será o tempo de ciclo e menor será o tempo total de execução dos programas.
+
+Em contrapartida, nas arquiteturas CISC o número de ciclos para executar cada instrução é muito maior, e um hardware mais complexo resultava em frequências de relógio menores, em virtude do longo tempo necessário para a decodificação das instruções \cite{silva2024}.
+
+\section{Consumo de energia e contagem de transistores}
+Durante algum tempo os projetistas buscaram reduzir o tempo de execução dos programas aumentando ao máximo a frequência do relógio do processador, a partir de diversas técnicas de projeto, por exemplo, o \textit{superpipelining}. Entretanto, essa abordagem tem um limite em função do atraso mínimo dos componentes do processador, assim como da potência máxima que podia ser dissipada pelo conjunto encapsulamento e dissipador \cite{silva2024}.
+
+Historicamente, acreditava-se que processadores CISC, por serem mais complexos, consumiriam mais energia. No entanto, em processadores modernos, o consumo está mais atrelado à tensão de operação, à frequência e à eficiência do \textit{pipeline} do que à classificação RISC ou CISC. Decodificadores complexos gastam mais energia, mas o uso extensivo de caches e a execução fora de ordem (\textit{out-of-order}) também elevam o consumo em ambas as arquiteturas.
+
+\section{Pipeline}
+O \textit{pipeline} é uma técnica de implementação de processadores que permite a sobreposição temporal das diversas fases de execução das instruções. Essa técnica aumenta o número de instruções executadas simultaneamente e a taxa de instruções iniciadas e terminadas por unidade de tempo. Contudo, o \textit{pipeline} não reduz o tempo gasto para completar cada instrução individualmente, podendo até mesmo aumentá-lo em alguns casos \cite{silva2024}.
+
+\section{Convergência moderna}
+Atualmente, os processadores da Intel são uma arquitetura híbrida, externamente compatíveis com o código da arquitetura x86, mas com as instruções traduzidas, em tempo de execução, para as instruções RISC da arquitetura interna, que efetivamente executa os programas \cite[p.~74]{silva2024}.
+
+Arquiteturas RISC modernas, como o ARM, também adicionaram instruções complexas para processamento de mídia (como NEON e SVE), mostrando que a fronteira entre as filosofias se tornou tênue \cite{arm2024}.

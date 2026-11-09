@@ -1,0 +1,69 @@
+\chapter{Mapeamento e diagrama arquitetural}
+\label{cap:diagramas}
+
+\section{Fluxo de execução de instruções}
+O ciclo básico de execução de qualquer processador é composto por três etapas fundamentais: busca (\textit{fetch}), decodificação (\textit{decode}) e execução (\textit{execute}). O contador de programa (PC) armazena o endereço da próxima instrução a ser executada. A unidade de controle busca essa instrução na memória e a decodifica para saber qual operação realizar. Em seguida, a ULA (Unidade Lógica e Aritmética) executa a operação, e o resultado pode ser armazenado em um registrador ou na memória.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        node distance=2cm,
+        box/.style={rectangle, draw, fill=blue!10, text width=2.5cm, text centered, minimum height=1cm, rounded corners},
+        arrow/.style={thick,->,>=stealth}
+    ]
+        \node (pc) [box] {PC (Program Counter)};
+        \node (mem) [box, right=of pc] {Memória (Instrução)};
+        \node (dec) [box, right=of mem] {Decodificador};
+        \node (ula) [box, below=of dec] {ULA (Execução)};
+        \node (reg) [box, left=of ula] {Banco de Registradores};
+
+        \draw [arrow] (pc) -- (mem);
+        \draw [arrow] (mem) -- (dec);
+        \draw [arrow] (dec) -- (ula);
+        \draw [arrow] (ula) -- (reg);
+        \draw [arrow] (reg) -- (pc);
+    \end{tikzpicture}
+    \caption{Ciclo de busca, decodificação e execução}
+    \label{fig:ciclo}
+\end{figure}
+
+\section{Fluxo de instrução em RISC e em CISC}
+Em arquiteturas RISC, a instrução lida da memória é decodificada diretamente pelo hardware, pois possui formato fixo e regular, sendo executada logo em seguida. Em arquiteturas CISC, especialmente no x86, a instrução complexa lida da memória passa por um tradutor que a converte em micro-operações menores (que se parecem com instruções RISC). São essas micro-operações que efetivamente entram no pipeline de execução.
+
+\section{Registradores das arquiteturas da PoC}
+Para entender o Assembly gerado na prova de conceito, é preciso conhecer os registradores de cada arquitetura:
+\begin{itemize}
+    \item \textbf{x86-64:} Os registradores de uso geral têm 64 bits e incluem \texttt{rax}, \texttt{rbx}, \texttt{rcx}, \texttt{rdx}, \texttt{rsi}, \texttt{rdi}, \texttt{rbp} e \texttt{rsp} (este último o ponteiro de pilha). O \texttt{rax} é frequentemente usado para acumuladores e retorno de funções.
+    \item \textbf{ARM64:} Possui 31 registradores de uso geral, nomeados de \texttt{x0} a \texttt{x30} (64 bits), além do \texttt{sp} (stack pointer) e \texttt{pc} (program counter). Quando o processador precisa operar com 32 bits, utiliza a visão \texttt{w0} a \texttt{w30} (ex: \texttt{w0} é a metade inferior de \texttt{x0}).
+\end{itemize}
+
+\section{Diagrama de pipeline comparativo}
+O pipeline moderno é dividido em estágios (IF, ID, EX, MEM, WB). O RISC foi desenhado para preencher esses estágios com facilidade devido ao tamanho fixo das instruções, o que facilita a sobreposição. O CISC moderno também usa pipeline, mas necessita do estágio extra de tradução para micro-operações antes de entrar na execução.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        start chain=going right,
+        node distance=0.2cm,
+        stage/.style={rectangle, draw, fill=green!20, text width=1.2cm, text centered, minimum height=1cm},
+        ciscstage/.style={rectangle, draw, fill=red!20, text width=1.2cm, text centered, minimum height=1cm}
+    ]
+        % RISC Pipeline
+        \node[font=\bfseries, anchor=west] at (-2, 1.5) {RISC (ARM64):};
+        \node[stage, on chain] {IF};
+        \node[stage, on chain] {ID};
+        \node[stage, on chain] {EX};
+        \node[stage, on chain] {MEM};
+        \node[stage, on chain] {WB};
+
+        % CISC Pipeline
+        \node[font=\bfseries, anchor=west] at (-2, -1.5) {CISC (x86-64):};
+        \node[ciscstage] (fetch) at (0, -1.5) {IF};
+        \node[ciscstage, right=0.2cm of fetch, fill=orange!30] (decode) {Decode \& Trans.};
+        \node[ciscstage, right=0.2cm of decode] (exec) {EX};
+        \node[ciscstage, right=0.2cm of exec] (mem) {MEM};
+        \node[ciscstage, right=0.2cm of mem] (wb) {WB};
+    \end{tikzpicture}
+    \caption{Comparação de pipelines: RISC direto vs. CISC com tradução para micro-operações}
+    \label{fig:pipeline}
+\end{figure}

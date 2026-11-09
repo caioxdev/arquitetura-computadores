@@ -1,0 +1,49 @@
+\documentclass[
+    12pt,
+    openright,
+    oneside,
+    a4paper,
+    english,
+    brazil,
+    sumario=tradicional
+]{abntex2}
+
+% 1. Carrega as configurações e pacotes
+\input{preambulo/config}
+
+% 2. Define os dados do trabalho (isso vai preencher a capa automaticamente)
+\titulo{Funcionamento da memória cache e técnicas de otimização}
+\autor{Arthur Freitas Araújo \\ Arthur Martins Fonseca Dias \\ Caio Seabra de Queiroz \\ Marina Souza Ramos}
+\local{Brasília -- DF}
+\data{2026}
+\instituicao{Universidade Católica de Brasília}
+\curso{Ciência da Computação}
+\disciplina{Arquitetura de Computadores}
+\professor{Weldes Lima Oliveira}
+
+\begin{document}
+
+% --- Pré-textuais ---
+\input{preambulo/capa} % Apenas a capa unificada
+
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+
+% --- Textuais (O Tema 1 em si) ---
+\textual
+
+\input{capitulos/01-introducao}
+\input{capitulos/02-fundamentacao}
+\input{capitulos/03-diagramas}
+\input{capitulos/04-metodologia}
+\input{capitulos/05-discussao}
+\input{capitulos/06-conclusao}
+
+% --- Pós-textuais ---
+\postextual
+% O nocite abaixo serve para incluir na lista de referências os livros que não foram citados diretamente no texto, mas que fazem parte da fundamentação
+\nocite{monteiro2007,weber2012,valgrind,intel2024,stallings2017,tanenbaum2013}
+\bibliography{referencias}
+
+\end{document}
